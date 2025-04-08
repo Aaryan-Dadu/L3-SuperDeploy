@@ -17,7 +17,7 @@ const db = new sqlite3.Database('./db/todos.db', (err) => {
 db.run(`CREATE TABLE IF NOT EXISTS todos (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT,
-  completed INTEGER DEFAULT 0,
+  completed INTEGER DEFAULT 0
 )`, (err) => {
     if (err) {
         console.error('Error creating table:', err.message);
@@ -31,7 +31,7 @@ app.get('/todos', (req, res) => {
         if (err) {
             res.status(500).json({ error: err.message });
         } else {
-            res.json({ todos: todos });
+            res.json({ todos: rows });
         }
     });
 });
@@ -53,7 +53,7 @@ app.post('/todos', (req, res) => {
 app.put('/todos/:id', (req, res) => {
     const { title, completed } = req.body;
     const { id } = req.params;
-    db.run('UPDATE todos SET completed = ?, title = ? WHERE id = ?', [title, completed, id], function (err) {
+    db.run('UPDATE todos SET completed = ?, title = ? WHERE id = ?', [completed, title, id], function (err) {
         if (err) {
             res.status(500).json({ error: err.message });
         } else if (this.changes === 0) {
